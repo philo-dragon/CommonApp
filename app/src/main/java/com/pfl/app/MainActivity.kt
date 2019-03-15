@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private fun requestData() {
         NetUtil.request(
             null,
-            "https://wanandroid.com/wxarticle/chapters/json",
+            "https:xxxxx",
             WanAndroidBean::class.java
         ) { tvText.text = it.toString() }
     }

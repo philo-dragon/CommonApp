@@ -68,11 +68,11 @@ public class JsonHttpRequest implements IHttpRequest {
             if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 callBackListener.onSuccess(urlConn.getInputStream());
             } else {
-                callBackListener.onFailure();
+                new RuntimeException("执行失败");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            callBackListener.onFailure();
+            new RuntimeException("执行失败");
         } finally {
             try {
                 out.close();
