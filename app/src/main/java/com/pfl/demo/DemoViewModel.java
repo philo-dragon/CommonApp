@@ -12,12 +12,11 @@ import java.util.List;
 public class DemoViewModel extends ViewModel {
 
     private int page = 1;
-    private LiveData<Resource<List<String>>> observer;
+    private MutableLiveData<Resource<List<String>>> observer = new MutableLiveData<>();
     private DemoRepository repository;
 
     public DemoViewModel() {
-        repository = new DemoRepository(new DemoLocalData(), new DemoNetworkData());
-        observer = repository.getData(1);
+        repository = new DemoRepository(observer, new DemoLocalData(), new DemoNetworkData());
     }
 
     public LiveData<Resource<List<String>>> getObserver() {
@@ -26,12 +25,12 @@ public class DemoViewModel extends ViewModel {
 
     public void refresh() {
         page = 1;
-        repository.refresh(page);
+        repository.getData(page);
     }
 
     public void loadMore() {
         page++;
-        repository.loadMore(page);
+        repository.getData(page);
     }
 
 }

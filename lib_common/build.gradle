@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
 
@@ -23,10 +25,11 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     api rootProject.ext.testLibs
     api rootProject.ext.supportLibs
-    implementation 'com.google.code.gson:gson:2.8.5'
+    api rootProject.ext.commonLibs
+    api 'com.google.code.gson:gson:2.8.5'
 }

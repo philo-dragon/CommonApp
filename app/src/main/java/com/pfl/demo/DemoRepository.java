@@ -17,14 +17,15 @@ public class DemoRepository {
 
     DemoLocalData localData;
     DemoNetworkData networkData;
+    MutableLiveData<Resource<List<String>>> liveData;
 
-    public DemoRepository(DemoLocalData localData, DemoNetworkData networkData) {
+    public DemoRepository(MutableLiveData<Resource<List<String>>> observer, DemoLocalData localData, DemoNetworkData networkData) {
+        this.liveData = observer;
         this.localData = localData;
         this.networkData = networkData;
     }
 
     public LiveData<Resource<List<String>>> getData(int page) {
-        MutableLiveData<Resource<List<String>>> liveData = new MutableLiveData<>();
         Resource<List<String>> resource = new Resource<>(Resource.LOADING, null, null);
         liveData.postValue(resource);
         A.diskIO.execute(() -> {
@@ -41,13 +42,4 @@ public class DemoRepository {
         });
         return liveData;
     }
-
-    public void refresh(int page) {
-        getData(page);
-    }
-
-    public void loadMore(int page) {
-        getData(page);
-    }
-
 }

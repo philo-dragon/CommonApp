@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.pfl.app.R;
 
+import java.util.List;
+
 /**
  * UI控制层，这部分就是我们平时写的Activity和Fragment。
  */
@@ -34,10 +36,22 @@ public class DemoFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "LOADING", Toast.LENGTH_SHORT).show();
                     break;
                 case Resource.REFRESH:
-                    Toast.makeText(getActivity().getApplicationContext(), "REFRESH", Toast.LENGTH_SHORT).show();
+                    List<String> data = listResource.getData();
+                    StringBuilder sb = new StringBuilder();
+                    for (String datum : data) {
+                        sb.append(datum).append(",");
+                    }
+                    sb.deleteCharAt(sb.length() - 1);
+                    Toast.makeText(getActivity().getApplicationContext(), "REFRESH " + sb.toString(), Toast.LENGTH_SHORT).show();
                     break;
                 case Resource.LOADMORE:
-                    Toast.makeText(getActivity().getApplicationContext(), "LOADMORE", Toast.LENGTH_SHORT).show();
+                    data = listResource.getData();
+                    sb = new StringBuilder();
+                    for (String datum : data) {
+                        sb.append(datum).append(",");
+                    }
+                    sb.deleteCharAt(sb.length() - 1);
+                    Toast.makeText(getActivity().getApplicationContext(), "LOADMORE " + sb.toString(), Toast.LENGTH_SHORT).show();
                     break;
                 case Resource.ERROR:
                     Toast.makeText(getActivity().getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
