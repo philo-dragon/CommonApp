@@ -9,6 +9,7 @@ import com.pfl.common.netstate.NetWork
 import com.pfl.common.constant.Constants
 import com.pfl.common.http.*
 import com.pfl.common.netstate.NetworkManager
+import com.pfl.demo.DemoFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -17,8 +18,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         NetworkManager.getInstance().registerObserver(this)
-
         requestData()
+
+        var fragment = DemoFragment()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.frameParent, fragment)
+            .commit()
     }
 
     private fun requestData() {
@@ -49,6 +55,8 @@ class MainActivity : AppCompatActivity() {
             NetType.NONE -> {
                 Log.e(Constants.TAG, " NetType.NONE  ===== $netType")
                 Toast.makeText(this@MainActivity, " NetType.CMWAP  ===== $netType", Toast.LENGTH_SHORT).show()
+            }
+            else -> {
             }
         }
     }
