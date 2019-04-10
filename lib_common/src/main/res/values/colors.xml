@@ -3,5 +3,6 @@
 
 
     <color name="transparent">#00000000</color>
-    <color name="color_ffffff">#FFFFFF</color>
+    <color name="color_white">@android:color/white</color>
+    <color name="color_black">@android:color/black</color>
 </resources>

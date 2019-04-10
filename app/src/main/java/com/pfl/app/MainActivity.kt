@@ -20,10 +20,9 @@ class MainActivity : AppCompatActivity() {
         NetworkManager.getInstance().registerObserver(this)
         requestData()
 
-        var fragment = DemoFragment()
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.frameParent, fragment)
+            .replace(R.id.frameParent, DemoFragment())
             .commit()
     }
 
@@ -36,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    @NetWork(netType = NetType.AUTO)
+    @NetWork(netType = NetType.WIFI)
     fun network(netType: NetType) {
 
         when (netType) {
