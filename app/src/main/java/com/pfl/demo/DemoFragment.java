@@ -7,17 +7,18 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.pfl.app.R;
+import com.pfl.common.base.BaseFragment;
 
 import java.util.List;
 
 /**
  * UI控制层，这部分就是我们平时写的Activity和Fragment。
  */
-public class DemoFragment extends Fragment {
-    DemoViewModel viewModel;
+public class DemoFragment extends BaseFragment {
+
+    private DemoViewModel viewModel;
 
     @Nullable
     @Override
@@ -29,11 +30,15 @@ public class DemoFragment extends Fragment {
     }
 
     private void registObserver() {
+
         viewModel.getObserver().observe(this, listResource -> {
 
             switch (listResource.getStatus()) {
                 case Resource.LOADING:
-                    Toast.makeText(getActivity().getApplicationContext(), "LOADING", Toast.LENGTH_SHORT).show();
+                    showDialog();
+                    break;
+                case Resource.END_LOADING:
+                    dismissDialog();
                     break;
                 case Resource.REFRESH:
                     List<String> data = listResource.getData();

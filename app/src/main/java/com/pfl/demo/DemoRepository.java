@@ -13,7 +13,7 @@ import java.util.List;
  * 仓库的工作就是在本地和网络数据之间做一个分配和调度的工作，调用方不管你的数据是从何而来的，我只是要从你仓库这里获取数据而已，
  * 而仓库则要自主分配如何更好更快地将数据提供给调用方。
  */
-public class DemoRepository {
+public class DemoRepository extends BaseRepository<List<String>> {
 
     DemoLocalData localData;
     DemoNetworkData networkData;
@@ -26,9 +26,15 @@ public class DemoRepository {
     }
 
     public LiveData<Resource<List<String>>> getData(int page) {
-        Resource<List<String>> resource = new Resource<>(Resource.LOADING, null, null);
-        liveData.postValue(resource);
+        startDialog(liveData);
         A.diskIO.execute(() -> {
+
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            dismissDialog(liveData);
             if (page == 1) {
                 List<String> data = networkData.getData();
                 Resource<List<String>> network = new Resource<>(Resource.REFRESH, data, null);
@@ -39,6 +45,7 @@ public class DemoRepository {
                 Resource<List<String>> network = new Resource<>(Resource.LOADMORE, data, null);
                 liveData.postValue(network);
             }
+
         });
         return liveData;
     }

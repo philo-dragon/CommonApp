@@ -2,9 +2,10 @@ package com.pfl.demo;
 
 public class Resource<T> {
     public static final int ERROR = 0;
-    public static final int LOADING = 1;
-    public static final int REFRESH = 2;
-    public static final int LOADMORE = 3;
+    public static final int REFRESH = 1;
+    public static final int LOADMORE = 2;
+    public static final int LOADING = 3;
+    public static final int END_LOADING = 4;
 
     private int status;
     private T data;
