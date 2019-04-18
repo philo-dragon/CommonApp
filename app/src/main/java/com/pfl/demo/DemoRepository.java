@@ -2,6 +2,7 @@ package com.pfl.demo;
 
 import androidx.lifecycle.MutableLiveData;
 import com.pfl.common.utils.A;
+import com.pfl.common.utils.ThreadPoolUtil;
 
 import java.util.List;
 
@@ -26,26 +27,29 @@ class DemoRepository extends BaseRepository {
 
     void getData(int page) {
         startDialog(liveData);
-        A.diskIO.execute(() -> {
 
-            sleep(500);
+        ThreadPoolUtil.INSTANCE
+                .getExecutordiskIO()
+                .execute(() -> {
 
-            dismissDialog(liveData);
+                    sleep(500);
 
-            sleep(10);
+                    dismissDialog(liveData);
 
-            if (page == 1) {
-                List<String> data = networkData.getData();
-                Resource<List<String>> network = new Resource<>(Resource.REFRESH, data, null);
-                localData.save(data);
-                liveData.postValue(network);
-            } else {
-                List<String> data = networkData.getData();
-                Resource<List<String>> network = new Resource<>(Resource.LOADMORE, data, null);
-                liveData.postValue(network);
-            }
+                    sleep(100);
 
-        });
+                    if (page == 1) {
+                        List<String> data = networkData.getData();
+                        Resource<List<String>> network = new Resource<>(Resource.REFRESH, data, null);
+                        localData.save(data);
+                        liveData.postValue(network);
+                    } else {
+                        List<String> data = networkData.getData();
+                        Resource<List<String>> network = new Resource<>(Resource.LOADMORE, data, null);
+                        liveData.postValue(network);
+                    }
+
+                });
     }
 
 }
