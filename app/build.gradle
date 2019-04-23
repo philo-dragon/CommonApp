@@ -30,5 +30,6 @@ android {
 }
 
 dependencies {
-    api project(':lib_common')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation project(':lib_common')
 }
