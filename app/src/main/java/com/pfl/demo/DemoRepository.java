@@ -1,7 +1,6 @@
 package com.pfl.demo;
 
 import androidx.lifecycle.MutableLiveData;
-import com.pfl.common.utils.A;
 import com.pfl.common.utils.ThreadPoolUtil;
 
 import java.util.List;
@@ -32,11 +31,11 @@ class DemoRepository extends BaseRepository {
                 .getExecutordiskIO()
                 .execute(() -> {
 
-                    sleep(500);
+                    sleep(400);
 
                     dismissDialog(liveData);
 
-                    sleep(100);
+                    sleep(200);
 
                     if (page == 1) {
                         List<String> data = networkData.getData();

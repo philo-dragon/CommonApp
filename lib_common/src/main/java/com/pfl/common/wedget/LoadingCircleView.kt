@@ -1,7 +1,5 @@
 package com.jojo.design.common_ui
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
@@ -22,11 +20,11 @@ class LoadingCircleView @JvmOverloads constructor(context: Context, attrs: Attri
     private var mWidth = 0f
     private var mPadding = 0f
     private var startAngle = 0f
-    private var mPaint: Paint? = null
+    private lateinit var mPaint: Paint
     private var bgColor = Color.argb(100, 245, 245, 245)//加载框背景色
     private var barColor = Color.argb(100, 245, 245, 245)//加载框动画色
 
-    internal var valueAnimator: ValueAnimator? = null
+    private var valueAnimator: ValueAnimator? = null
 
     init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.CircleDialogLoading)
@@ -50,9 +48,9 @@ class LoadingCircleView @JvmOverloads constructor(context: Context, attrs: Attri
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        mPaint!!.color = bgColor
+        mPaint.color = bgColor
         canvas.drawCircle(mWidth / 2, mWidth / 2, mWidth / 2 - mPadding, mPaint!!)
-        mPaint!!.color = barColor
+        mPaint.color = barColor
         @SuppressLint("DrawAllocation")
         val rectF = RectF(mPadding, mPadding, mWidth - mPadding, mWidth - mPadding)
         //第四个参数是否显示半径
@@ -62,12 +60,12 @@ class LoadingCircleView @JvmOverloads constructor(context: Context, attrs: Attri
 
     private fun initPaint() {
         mPaint = Paint()
-        mPaint!!.isAntiAlias = true
-        mPaint!!.style = Paint.Style.STROKE
-        mPaint!!.strokeWidth = 4f
+        mPaint.isAntiAlias = true
+        mPaint.style = Paint.Style.STROKE
+        mPaint.strokeWidth = 4f
     }
 
-    fun startAnim() {
+    private fun startAnim() {
         stopAnim()
         startViewAnim(0f, 1f, 1000)
     }
@@ -83,27 +81,22 @@ class LoadingCircleView @JvmOverloads constructor(context: Context, attrs: Attri
 
     private fun startViewAnim(startF: Float, endF: Float, time: Long): ValueAnimator {
         valueAnimator = ValueAnimator.ofFloat(startF, endF)
+        valueAnimator?.apply {
+            duration = time
+            interpolator = LinearInterpolator()
+            repeatCount = ValueAnimator.INFINITE//无限循环
+            repeatMode = ValueAnimator.RESTART//
 
-        valueAnimator!!.duration = time
-        valueAnimator!!.interpolator = LinearInterpolator()
-        valueAnimator!!.repeatCount = ValueAnimator.INFINITE//无限循环
-        valueAnimator!!.repeatMode = ValueAnimator.RESTART//
-
-        valueAnimator!!.addUpdateListener { valueAnimator ->
-            val value = valueAnimator.animatedValue as Float
-            startAngle = 360 * value
-            //重新绘制
-            invalidate()
-        }
-        valueAnimator!!.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                super.onAnimationEnd(animation)
+            addUpdateListener { valueAnimator ->
+                val value = valueAnimator.animatedValue as Float
+                startAngle = 360 * value
+                //重新绘制
+                invalidate()
             }
-        })
-        if (!valueAnimator!!.isRunning) {
-            valueAnimator!!.start()
+            if (!isRunning) {
+               start()
+            }
         }
-
         return valueAnimator as ValueAnimator
     }
 }
