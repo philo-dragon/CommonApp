@@ -27,6 +27,9 @@ ext {
 
             dagger2         : "2.22.1",
             dagger2_compiler: "2.22.1",
+
+            glide           : "4.9.0",
+            glide_compiler  : "4.9.0",
     ]
 
     testDeps = [
@@ -44,14 +47,16 @@ ext {
     ]
     commonDeps = [
             multidex: "com.android.support:multidex:${depsVersion.appcompat}",
-            retrofit : "com.squareup.retrofit2:retrofit:${depsVersion.retrofit}",
+            retrofit: "com.squareup.retrofit2:retrofit:${depsVersion.retrofit}",
             arouter : "com.alibaba:arouter-api:${depsVersion.arouter}",
             dagger2 : "com.google.dagger:dagger:${depsVersion.dagger2}",
+            glide   : "com.github.bumptech.glide:glide:${depsVersion.glide}",
     ]
 
     compiler = [
             "arouter_compiler": "com.alibaba:arouter-compiler:${depsVersion.arouter_compiler}",
             "dagger2_compiler": "com.google.dagger:dagger-compiler:${depsVersion.dagger2_compiler}",
+            "glide_compiler"  : "com.github.bumptech.glide:compiler:${depsVersion.glide_compiler}",
     ]
 
     testLibs = testDeps.values()
@@ -61,5 +66,6 @@ ext {
     annotationProcessorLibs = [
             compiler["arouter_compiler"],
             compiler["dagger2_compiler"],
+            compiler["glide_compiler"],
     ]
 }
