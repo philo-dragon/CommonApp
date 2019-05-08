@@ -16,22 +16,16 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
         if (!isViewAttached()) {
             return;
         }
-        mView.showLoading();
+        getView().showLoading();
         model.login(username, password)
-                .compose(RxScheduler.<BaseObjectBean<LoginBean>>Flo_io_main())
-                .as(mView.<BaseObjectBean<LoginBean>>bindAutoDispose())
-                .subscribe(new Consumer<BaseObjectBean<LoginBean>>() {
-                    @Override
-                    public void accept(BaseObjectBean<LoginBean> bean) throws Exception {
-                        mView.onSuccess(bean);
-                        mView.hideLoading();
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        mView.onError(throwable);
-                        mView.hideLoading();
-                    }
+                .compose(RxScheduler.Flo_io_main())
+                .as(getView().<BaseObjectBean<LoginBean>>bindAutoDispose())
+                .subscribe(bean -> {
+                    getView().onSuccess(bean);
+                    getView().hideLoading();
+                }, throwable -> {
+                    getView().onError(throwable);
+                    getView().hideLoading();
                 });
     }
 }
