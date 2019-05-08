@@ -3,7 +3,7 @@ package com.pfl.common.base
 import androidx.appcompat.app.AppCompatActivity
 import com.jojo.design.common_ui.dialog.LoadingDialog
 
-class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity() {
 
     private var mDialog: LoadingDialog? = null
 

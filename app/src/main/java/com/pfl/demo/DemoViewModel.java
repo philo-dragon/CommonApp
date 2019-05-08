@@ -16,7 +16,7 @@ public class DemoViewModel extends ViewModel {
     private DemoRepository repository;
 
     public DemoViewModel() {
-        repository = new DemoRepository(observer, new DemoLocalData(), new DemoNetworkData());
+        repository = new DemoRepository(new DemoLocalData(), new DemoNetworkData());
     }
 
     public LiveData<Resource<List<String>>> getObserver() {
@@ -25,12 +25,57 @@ public class DemoViewModel extends ViewModel {
 
     public void refresh() {
         page = 1;
-        repository.getData(page);
+        getData(page);
     }
 
     public void loadMore() {
         page++;
-        repository.getData(page);
+        getData(page);
+    }
+
+    private void getData(int page) {
+        startDialog();
+        repository.getData(page, new DemoResult<List<String>>() {
+            @Override
+            public void onSuccess(List<String> strings) {
+
+                dismissDialog();
+
+                sleep(200);
+
+                Resource<List<String>> datas;
+                if (page == 1) {
+                    datas = new Resource<>(Resource.REFRESH, strings, null);
+                } else {
+                    datas = new Resource<>(Resource.LOADMORE, strings, null);
+                }
+
+                observer.postValue(datas);
+            }
+
+            @Override
+            public void onFaile(int code, String msg) {
+                dismissDialog();
+            }
+        });
+    }
+
+    protected void startDialog() {
+        Resource endDilaog = new Resource(Resource.LOADING, null, null);
+        observer.postValue(endDilaog);
+    }
+
+    protected void dismissDialog() {
+        Resource endDilaog = new Resource<>(Resource.END_LOADING, null, null);
+        observer.postValue(endDilaog);
+    }
+
+    protected void sleep(int i) {
+        try {
+            Thread.sleep(i);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
