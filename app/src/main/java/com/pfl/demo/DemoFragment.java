@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.pfl.app.R;
+import com.pfl.common.aop.SingleClick;
 import com.pfl.common.base.BaseFragment;
 import com.pfl.common.utils.ToastUtils;
 
@@ -61,9 +62,27 @@ public class DemoFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.btnRefresh).setOnClickListener(v -> viewModel.refresh());
+        view.findViewById(R.id.btnRefresh).setOnClickListener(new View.OnClickListener() {
+            // 如果需要自定义点击时间间隔，自行传入毫秒值即可
+            // @SingleClick(2000)
+            @SingleClick(5000)
+            @Override
+            public void onClick(View v) {
+                System.out.println("====================> " + System.currentTimeMillis());
+                viewModel.refresh();
+            }
+        });
+        view.findViewById(R.id.btnLoadMore).setOnClickListener(new View.OnClickListener() {
+            // 如果需要自定义点击时间间隔，自行传入毫秒值即可
+            // @SingleClick(2000)
+            @SingleClick(5000)
+            @Override
+            public void onClick(View v) {
+                System.out.println("====================> " + System.currentTimeMillis());
+                viewModel.loadMore();
+            }
+        });
 
-        view.findViewById(R.id.btnLoadMore).setOnClickListener(v -> viewModel.loadMore());
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
