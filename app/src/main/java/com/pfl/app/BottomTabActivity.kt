@@ -3,6 +3,8 @@ package com.pfl.app
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentPagerAdapter
 import com.pfl.common.bottom_tab.TabBean
 import kotlinx.android.synthetic.main.activity_home.*
 
@@ -17,5 +19,10 @@ class BottomTabActivity : AppCompatActivity() {
         tabs.add(TabBean("阅读练习",null,null, Color.BLACK,Color.BLUE,R.drawable.ic_tab_read_practiice_select,R.drawable.ic_tab_read_practiice_normal))
         tabs.add(TabBean("我的",null,null, Color.BLACK,Color.BLUE,R.drawable.ic_tab_my_select,R.drawable.ic_tab_my_normal))
         tabLayout.setTabDate(tabs)
+        tabLayout.setupWithViewPager(view_pager)
+        view_pager.adapter = BottomFragmentAdapter(supportFragmentManager)
+        view_pager.currentItem = 0
     }
+
+
 }

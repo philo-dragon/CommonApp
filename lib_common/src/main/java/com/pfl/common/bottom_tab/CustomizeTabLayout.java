@@ -25,7 +25,6 @@ public class CustomizeTabLayout extends FrameLayout {
     private int mCurrentTab;
     private OnTabSelectListener mListener;
     private ViewPager mViewPager;
-    private int mLastTab;
 
     public void setmListener(OnTabSelectListener mListener) {
         this.mListener = mListener;
@@ -110,9 +109,11 @@ public class CustomizeTabLayout extends FrameLayout {
     }
 
     public void setCurrentTab(int currentTab) {
-        mLastTab = this.mCurrentTab;
         this.mCurrentTab = currentTab;
         updateTabSelection(currentTab);
+        if(null != mViewPager){
+            mViewPager.setCurrentItem(currentTab);
+        }
     }
 
     //更新tab
