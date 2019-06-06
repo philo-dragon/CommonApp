@@ -1,10 +1,8 @@
 package com.pfl.app
 
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.appcompat.app.AppCompatActivity
 import com.pfl.common.bottom_tab.TabBean
 import kotlinx.android.synthetic.main.activity_home.*
 
