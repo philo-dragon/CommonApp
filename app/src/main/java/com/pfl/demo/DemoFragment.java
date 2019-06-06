@@ -55,10 +55,10 @@ public class DemoFragment extends BaseFragment {
                     dismissDialog();
                     break;
                 case Resource.ERROR:
-                    ToastUtils.Companion.makeShortToast("ERROR");
+                    ToastUtils.makeShortToast("ERROR");
                     break;
                 default:
-                    ToastUtils.Companion.makeShortToast("其他错误");
+                    ToastUtils.makeShortToast("其他错误");
                     break;
             }
         });

@@ -19,6 +19,7 @@ class ToastUtils {
          * @param text
          * @param isLongToast
          */
+        @JvmStatic
         fun makeEventToast( text: String?,isLongToast: Boolean) {
 
             val v = LayoutInflater.from(Util.getInstance().application).inflate(R.layout.toast_view, null)
@@ -42,6 +43,7 @@ class ToastUtils {
          *
          * @param text
          */
+        @JvmStatic
         fun makeShortToast(text: String?) {
             if (null == text)
                 return
