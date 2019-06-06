@@ -8,11 +8,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.lifecycle.Transformations;
+import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.pfl.common.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CustomizeTabLayout extends FrameLayout {
     private LinearLayout mTabLinearLayout;
@@ -21,6 +24,7 @@ public class CustomizeTabLayout extends FrameLayout {
     private int mTabCount;
     private int mCurrentTab;
     private OnTabSelectListener mListener;
+    private ViewPager mViewPager;
     private int mLastTab;
 
     public void setmListener(OnTabSelectListener mListener) {
@@ -43,7 +47,7 @@ public class CustomizeTabLayout extends FrameLayout {
     }
 
     //添加导航栏数据
-    public void setTabDate(ArrayList<TabBean> tabBeans) {
+    public void setTabDate(List<TabBean> tabBeans) {
         if (tabBeans == null || tabBeans.size() == 0) {
             throw new IllegalStateException("TabEntitys can not be NULL or EMPTY !");
         }
@@ -92,6 +96,7 @@ public class CustomizeTabLayout extends FrameLayout {
                     setCurrentTab(position);
                     if (mListener != null) {
                         mListener.onTabSelect(position);
+                        mViewPager.setCurrentItem(position);
                     }
                 } else {
                     if (mListener != null) {
@@ -125,15 +130,42 @@ public class CustomizeTabLayout extends FrameLayout {
                 Glide.with(mContext)
                         .load(isSelect ? tabBean.getSelectUrl() : tabBean.getUnSelectUrl())
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .placeholder(isSelect ? tabBean.getSelectIcon() : tabBean.getUnSelectIcon()).into(iv_tab_icon);
+                        .placeholder(isSelect ? tabBean.getSelectIcon() : tabBean.getUnSelectIcon())
+                        .into(iv_tab_icon);
             }
         }
     }
 
+    public void setupWithViewPager(ViewPager viewPager) {
+        if (null == viewPager) {
+            throw new RuntimeException("ViewPager must is not null");
+        }
+        this.mViewPager = viewPager;
+        mViewPager.addOnPageChangeListener(new TabOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                setCurrentTab(position);
+            }
+        });
+    }
 
     public interface OnTabSelectListener {
         void onTabSelect(int position);
 
         void onTabReselect(int position);
+    }
+
+    static class TabOnPageChangeListener implements ViewPager.OnPageChangeListener{
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+        }
     }
 }

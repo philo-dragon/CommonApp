@@ -7,11 +7,11 @@ import java.util.concurrent.Executors
 
 object ThreadPoolUtil {
 
-    public val ExecutordiskIO = Executors.newSingleThreadExecutor()
+    val ExecutordiskIO = Executors.newSingleThreadExecutor()
 
-    public val networkIO = Executors.newFixedThreadPool(3)
+    val networkIO = Executors.newFixedThreadPool(3)
 
-    public val mainThread = MainThreadExecutor()
+    val mainThread = MainThreadExecutor()
 
     class MainThreadExecutor : Executor {
         val handler = Handler(Looper.getMainLooper())

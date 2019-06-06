@@ -11,33 +11,27 @@ import java.util.List;
  * 仓库的工作就是在本地和网络数据之间做一个分配和调度的工作，调用方不管你的数据是从何而来的，我只是要从你仓库这里获取数据而已，
  * 而仓库则要自主分配如何更好更快地将数据提供给调用方。
  */
-class DemoRepository<T> extends BaseRepository {
+class DemoRepository extends BaseRepository {
 
     private DemoLocalData localData;
     private DemoNetworkData networkData;
 
-    DemoRepository(DemoLocalData localData, DemoNetworkData networkData) {
-        this.localData = localData;
-        this.networkData = networkData;
+    DemoRepository() {
+        this.localData = new DemoLocalData();
+        this.networkData = new DemoNetworkData();
     }
 
-     void getData(int page, DemoResult<List<String>> result) {
+    void getData(int page, DemoResult<List<String>> result) {
 
         ThreadPoolUtil.INSTANCE
                 .getExecutordiskIO()
                 .execute(() -> {
-
                     sleep(500);
-
+                    List<String> data = networkData.getData();
                     if (page == 1) {
-                        List<String> data = networkData.getData();
                         localData.save(data);
-                        result.onSuccess(data);
-                    } else {
-                        List<String> data = networkData.getData();
-                        result.onSuccess(data);
                     }
-
+                    result.onSuccess(data);
                 });
     }
 

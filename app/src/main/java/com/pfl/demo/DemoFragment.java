@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,25 +37,30 @@ public class DemoFragment extends BaseFragment {
 
         viewModel.getObserver().observe(this, listResource -> {
             switch (listResource.getStatus()) {
-                case Resource.LOADING:
-                    Log.e("DemoFragment", "LOADING");
-                    showDialog();
-                    break;
-                case Resource.END_LOADING:
-                    Log.e("DemoFragment", "END_LOADING");
-                    dismissDialog();
-                    break;
                 case Resource.REFRESH:
                     adapter.setNewData(listResource.getData());
                     break;
                 case Resource.LOADMORE:
                     adapter.addData(listResource.getData());
                     break;
+            }
+        });
+
+        viewModel.getStateObserver().observe(this, resource -> {
+            switch (resource.getStatus()) {
+                case Resource.LOADING:
+                    showDialog();
+                    break;
+                case Resource.END_LOADING:
+                    dismissDialog();
+                    break;
                 case Resource.ERROR:
                     ToastUtils.Companion.makeShortToast("ERROR");
                     break;
+                default:
+                    ToastUtils.Companion.makeShortToast("其他错误");
+                    break;
             }
-
         });
     }
 
@@ -68,7 +74,6 @@ public class DemoFragment extends BaseFragment {
             @SingleClick(5000)
             @Override
             public void onClick(View v) {
-                System.out.println("====================> " + System.currentTimeMillis());
                 viewModel.refresh();
             }
         });
@@ -78,7 +83,6 @@ public class DemoFragment extends BaseFragment {
             @SingleClick(5000)
             @Override
             public void onClick(View v) {
-                System.out.println("====================> " + System.currentTimeMillis());
                 viewModel.loadMore();
             }
         });
