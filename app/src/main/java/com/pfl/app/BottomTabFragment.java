@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import com.pfl.update.UpdateDialogFragment;
 
 public class BottomTabFragment extends Fragment {
 
@@ -25,4 +26,17 @@ public class BottomTabFragment extends Fragment {
 
         return inflater.inflate(R.layout.fragment_bottom_tab,container,false);
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        view.findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdateDialogFragment.newInstance().show(getChildFragmentManager(),"updateDialog");
+            }
+        });
+    }
+
+
 }
